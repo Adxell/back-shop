@@ -13,3 +13,9 @@
 ```
 docker-coompose up -d
 ```
+
+6. Ejecutar seed
+
+```
+localhost:3000/api/seed
+```
