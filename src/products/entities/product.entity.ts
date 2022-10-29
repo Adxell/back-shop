@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, One
 import { ProductImage } from './';
 
 
-@Entity()
+@Entity({name: 'products'})
 export class Product {
     @PrimaryGeneratedColumn('uuid')
     id: string;
