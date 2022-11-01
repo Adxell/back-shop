@@ -32,18 +32,24 @@ export class ProductsController {
   ) {
     return this.productsService.create(createProductDto, user);
   }
-
+  
   @Get()
+  @ApiResponse({ status: 200, description: 'Get produts by limit or offset parameters'})
   findAll(@Query() paginationDto: PaginationDto) {
     return this.productsService.findAll(paginationDto);
   }
-
+  
   @Get(':term')
+  @ApiResponse({ status: 200, description: 'Get product by title, id or slug'})
+  @ApiResponse({ status: 404, description: 'Not found product'})
   findOne(@Param('term') term: string) {
     return this.productsService.findOnePlain(term);
   }
-
+  
   @Patch(':id')
+  @ApiResponse({ status: 200, description: 'Updated product'})
+  @ApiResponse({ status: 400, description: 'Bad request'})
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related'})
   @RoleProtected( validRoles.superUser, validRoles.admin)
   @UseGuards( AuthGuard(), UserRoleGuard )
   update(
@@ -55,6 +61,9 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @ApiResponse({ status: 200, description: 'Deleted product'})
+  @ApiResponse({ status: 400, description: 'Bad request'})
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related'})
   @RoleProtected( validRoles.superUser, validRoles.admin)
   @UseGuards( AuthGuard(), UserRoleGuard )
   remove(@Param('id', ParseUUIDPipe) id: string) {
