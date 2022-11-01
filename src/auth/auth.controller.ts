@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, UseGuards, Req, Headers} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport'
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { IncomingHttpHeaders } from 'http';
 
@@ -20,16 +20,23 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @ApiCreatedResponse({ status: 201, description: 'User was created'})
+  @ApiResponse({ status: 400, description: 'Bad request'})
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.authService.create(createUserDto);
   }
 
   @Post('login')
+  @ApiCreatedResponse({ status: 200, description: 'User logged'})
+  @ApiResponse({ status: 400, description: 'Bad request'})
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto)
   }
 
   @Get('check-status')
+  @ApiCreatedResponse({ status: 200, description: 'status ok for JWT'})
+  @ApiResponse({ status: 400, description: 'Bad request'})
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related'})
   @RoleProtected()
   @UseGuards( AuthGuard(), UserRoleGuard )
   checkAuthStatus(
@@ -38,49 +45,49 @@ export class AuthController {
     return this.authService.checkAuthStatus(user)
   }
 
-  @Get('private')
-  @UseGuards( AuthGuard() )
-  testingPrivateRoute(
-    @GetUser() user: User,
-    @GetUser('email') userEmail: User,
-    @Req() request: Express.Request,
-    @RawHeaders() rawHeaders: string[],
-    @Headers() headers: IncomingHttpHeaders
-  ){
-    // console.log( {user: request.user } )
-    console.log(request)
-    return {
-      ok: true,
-      message: user,
-      userEmail,
-      rawHeaders,
-      headers
-    }
-  }
+  // @Get('private')
+  // @UseGuards( AuthGuard() )
+  // testingPrivateRoute(
+  //   @GetUser() user: User,
+  //   @GetUser('email') userEmail: User,
+  //   @Req() request: Express.Request,
+  //   @RawHeaders() rawHeaders: string[],
+  //   @Headers() headers: IncomingHttpHeaders
+  // ){
+  //   // console.log( {user: request.user } )
+  //   console.log(request)
+  //   return {
+  //     ok: true,
+  //     message: user,
+  //     userEmail,
+  //     rawHeaders,
+  //     headers
+  //   }
+  // }
 
-  // @SetMetadata('roles', ['admin', 'super-user'])
+  // // @SetMetadata('roles', ['admin', 'super-user'])
 
-  @Get('private2')
-  @RoleProtected( validRoles.superUser, validRoles.admin)
-  @UseGuards( AuthGuard(), UserRoleGuard )
-  privateRoute2(
-    @GetUser() user: User
-  ){
-    return {
-      ok: true,
-      user
-    }
-  }
-  @Get('private3')
-  // @Auth()
-  @RoleProtected( validRoles.superUser, validRoles.admin)
-  @UseGuards( AuthGuard(), UserRoleGuard )
-  privateRoute3(
-    @GetUser() user: User
-  ){
-    return {
-      ok: true,
-      user
-    }
-  }
+  // @Get('private2')
+  // @RoleProtected( validRoles.superUser, validRoles.admin)
+  // @UseGuards( AuthGuard(), UserRoleGuard )
+  // privateRoute2(
+  //   @GetUser() user: User
+  // ){
+  //   return {
+  //     ok: true,
+  //     user
+  //   }
+  // }
+  // @Get('private3')
+  // // @Auth()
+  // @RoleProtected( validRoles.superUser, validRoles.admin)
+  // @UseGuards( AuthGuard(), UserRoleGuard )
+  // privateRoute3(
+  //   @GetUser() user: User
+  // ){
+  //   return {
+  //     ok: true,
+  //     user
+  //   }
+  // }
 }
