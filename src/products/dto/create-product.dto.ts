@@ -15,41 +15,68 @@ export class CreateProductDto {
     @MinLength(1)
     title: string;
 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Price product',
+        default: 0,
+        required: false,
+        type: Number
+    })
     @IsNumber()
     @IsPositive()
     @IsOptional()
     price?: number;
 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Description product',
+        required: false
+    })
     @IsString()
     @IsOptional()
     description?: string;
 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Slug product',
+        required: false
+    })
     @IsString()
     @IsOptional()
     slug?: string;
 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Stock of products',
+        required: false,
+        type: Number
+    })
     @IsInt()
     @IsPositive()
     @IsOptional()
     stock?: number;
 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Sizes of products',
+        required: true,
+        type: Array
+    })
     @IsString({
         each: true
     })
     @IsArray()
     sizes: string[];
 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'gender products',
+        required: true,
+        type: Array
+    })
     @IsIn(['men', 'women', 'kid', 'unisex'])
     gender: string;
     
 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Tags products',
+        required: true,
+        type: Array
+    })
     @IsString({
         each: true,
     })
@@ -57,7 +84,11 @@ export class CreateProductDto {
     @IsOptional()
     tags: string[];
 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Images products',
+        required: false,
+        type: Array
+    })
     @IsString({
         each: true,
     })
