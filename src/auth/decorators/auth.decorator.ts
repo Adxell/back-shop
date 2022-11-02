@@ -8,7 +8,7 @@ import { UserRoleGuard } from '../guards/user-role/user-role.guard';
 
 export const Auth = (...roles: validRoles[]) => {
     return applyDecorators(
-    RoleProtected( validRoles.superUser, validRoles.admin),
+    RoleProtected( ...roles),
     UseGuards(AuthGuard, UserRoleGuard),
   );
 }
