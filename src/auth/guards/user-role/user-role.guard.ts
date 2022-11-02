@@ -25,8 +25,6 @@ export class UserRoleGuard implements CanActivate {
       throw new BadRequestException('User not found')
     }
 
-    console.log({role: user.roles})
-
     for (const role of user.roles) {
       if (validRoles.includes(role)) {
         return true
