@@ -13,8 +13,6 @@ export class SeedController {
   constructor(private readonly seedService: SeedService) {}
   
   @Get()
-  @RoleProtected( validRoles.superUser, validRoles.admin)
-  @UseGuards( AuthGuard(), UserRoleGuard )
   executeSeed ( ) {
     return this.seedService.runSeed()
   }
