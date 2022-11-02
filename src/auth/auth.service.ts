@@ -47,9 +47,6 @@ export class AuthService {
         where: {email}, 
         select: {email: true, password: true, id: true}
       })
-
-      console.log(user)
-
       if ( !user ) {
         throw new UnauthorizedException('Credentials are not valid(email)')
       }
